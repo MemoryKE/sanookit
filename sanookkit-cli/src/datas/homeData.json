@@ -1,0 +1,60 @@
+{
+    "AMOUNT_DEAL": [
+        {
+            "unit": "โรงเรียน",
+            "quantity": 20
+        },
+        {
+            "unit": "ใบ",
+            "quantity": 2000
+        },
+        {
+            "unit": "จังหวัด",
+            "quantity": 20
+        }
+    ],
+    "ACTIVITY_IMAGE_LIST": [
+        
+        {
+            "img_url": "../assets/IMG3178.jpg"
+        },
+        {
+            "img_url": "../assets/IMG_3179.jpg"
+        },
+        {
+            "img_url": "../assets/IMG_3180.jpg"
+        }
+    ],
+    "NEWS_LIST": [
+        {
+            "img_url": "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+            "description": "Permalink to เปิดห้องเรียนต้นแบบ Active Learning เตรียมพร้อมทักษะในศตวรรษ 21 รับมือความผันผวนท้าทายของตลาดงานในอนาคต",
+            "date": "25-08-2526"
+        },
+        {
+            "img_url": "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+            "description": "Permalink to เปิดห้องเรียนต้นแบบ Active Learning เตรียมพร้อมทักษะในศตวรรษ 21 รับมือความผันผวนท้าทายของตลาดงานในอนาคต",
+            "date": ""
+        },
+        {
+            "img_url": "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+            "description": "Permalink to เปิดห้องเรียนต้นแบบ Active Learning เตรียมพร้อมทักษะในศตวรรษ 21 รับมือความผันผวนท้าทายของตลาดงานในอนาคต",
+            "date": ""
+        },
+        {
+            "img_url": "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+            "description": "Permalink to เปิดห้องเรียนต้นแบบ Active Learning เตรียมพร้อมทักษะในศตวรรษ 21 รับมือความผันผวนท้าทายของตลาดงานในอนาคต",
+            "date": ""
+        },
+        {
+            "img_url": "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+            "description": "Permalink to เปิดห้องเรียนต้นแบบ Active Learning เตรียมพร้อมทักษะในศตวรรษ 21 รับมือความผันผวนท้าทายของตลาดงานในอนาคต",
+            "date": ""
+        },
+        {
+            "img_url": "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
+            "description": "Permalink to เปิดห้องเรียนต้นแบบ Active Learning เตรียมพร้อมทักษะในศตวรรษ 21 รับมือความผันผวนท้าทายของตลาดงานในอนาคต",
+            "date": ""
+        }
+    ]
+}
