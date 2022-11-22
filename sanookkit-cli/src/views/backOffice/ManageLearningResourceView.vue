@@ -147,10 +147,10 @@
                                 <v-select :items="grade_list" item-text="text" item-value="value" label="ระดับชั้น" ref="grade" :rules="[rules.required]" v-model="activity.grade" />
                             </v-col> -->
                             <v-col cols="12" sm="6" md="6">
-                                <v-file-input :rules="[rules.required]" accept="image/png, image/jpeg, image/bmp" placeholder="Pick an avatar" label="หน้าปกคู่มือสนุกคิด" v-model="activity.qr_file" />
+                                <v-file-input  accept="image/png, image/jpeg, image/bmp" placeholder="Pick an avatar" label="หน้าปกคู่มือสนุกคิด" v-model="activity.qr_file" />
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
-                                <v-file-input :rules="[rules.required]" multiple accept="image/png, image/jpeg, image/bmp" placeholder="Pick an avatar" label="หน้าปกคู่มือสนุกคิด" v-model="activity.img_files" />
+                                <v-file-input  multiple accept="image/png, image/jpeg, image/bmp" placeholder="Pick an avatar" label="หน้าปกคู่มือสนุกคิด" v-model="activity.img_files" />
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
                                 <v-textarea label="คำอธิบาาย" hint="This field uses counter prop" :rules="[rules.required]" v-model="activity.description" />
@@ -244,13 +244,16 @@ export default {
                 fileSize: value => !value || value.size < 2000000 || 'Avatar size should be les'
             },
             dropdown_add_item: [{
-                    title: "คู่มือสนุกคิด"
+                    title: "คู่มือสนุกคิด",
+                    value: 'manual'
                 },
                 {
-                    title: "สื่อสนุกคิด"
+                    title: "สื่อสนุกคิด",
+                    value: 'media'
                 },
                 {
-                    title: "แหล่งเรียนรู้อื่น"
+                    title: "แหล่งเรียนรู้อื่น",
+                    value: 'another'
                 },
             ],
             addDataDialog: false,
@@ -399,12 +402,15 @@ export default {
                         field: 'pdf_name'
                     },
                 ],
-                learning_type: "คู่มือสนุกคิด",
+                learning_type: "manual",
                 img_files: [this.addManualForm.img_file, this.addManualForm.pdf_file]
             }
-            this.$store.dispatch("addLearningResourceList", manualData).then((_) => {
+            this.$store.dispatch("addLearningResourceImageList", manualData).then((_) => {
+                const res = this.learning_resource
+                this.$store.dispatch("addLearningResourceList", res).then((_) => {
                     this.dialog[0].isOpen = false
                     this.requestData()
+                })
             })
         },
         async addNewMedia() {
@@ -422,13 +428,16 @@ export default {
                 teacher_des: this.addMediaForm.teacher_des,
                 parent_des: this.addMediaForm.parent_des,
                 image_name_list: img_name_list,
-                learning_type: 'สื่อสนุกคิด',
+                learning_type: 'media',
                 img_files: img_file_list,
                 activities: this.mapActivities()
             }
-            this.$store.dispatch("addLearningResourceList", mediaData).then((_) => {
-                this.dialog[1].isOpen = false
-                this.requestData()
+            this.$store.dispatch("addLearningResourceImageList", mediaData).then((_) => {
+                const res = this.learning_resource
+                this.$store.dispatch("addLearningResourceList", res).then((_) => {
+                    this.dialog[1].isOpen = false
+                    this.requestData()
+                })
             })
         },
         mapActivities() {
@@ -450,21 +459,24 @@ export default {
             }]
             var img_file_list = [this.addMediaForm.img_file]
             this.addMediaForm.activities.forEach((activity, index) => {
-                image_name_list.push({
-                    type: 'activity',
-                    index: index,
-                    field: 'qr_name'
-                })
-                img_file_list.push(activity.qr_file)
-                activity.img_files.forEach((img) => {
+                if(typeof activity.qr_file != 'undefined' && activity.qr_file !=  null) {
                     image_name_list.push({
                         type: 'activity',
                         index: index,
-                        field: 'imgs_name'
+                        field: 'qr_name'
                     })
-                    img_file_list.push(img)
-                })
-
+                    img_file_list.push(activity.qr_file)
+                }
+                if(typeof activity.img_files != 'undefined' && activity.img_files !=  null) {
+                    activity.img_files.forEach((img) => {
+                        image_name_list.push({
+                            type: 'activity',
+                            index: index,
+                            field: 'imgs_name'
+                        })
+                        img_file_list.push(img)
+                    })
+                }
             })
             return [image_name_list, img_file_list]
         },
@@ -494,28 +506,31 @@ export default {
                     image_name: this.addAnotherResourceForm.img_file.name,
                     field: 'img_name'
                 }],
-                learning_type: 'แหล่งเรียนรู้อื่น',
+                learning_type: 'another',
                 img_files: [this.addAnotherResourceForm.img_file]
             }
-            this.$store.dispatch("addLearningResourceList", anotherResourceData).then((_) => {
-                this.dialog[2].isOpen = false
-                this.requestData()
+            this.$store.dispatch("addLearningResourceImageList", anotherResourceData).then((_) => {
+                const res = this.learning_resource
+                this.$store.dispatch("addLearningResourceList", res).then((_) => {
+                    this.dialog[2].isOpen = false
+                    this.requestData()
+                })
             })
         },
         setupData() {
         },
         onClickEditBtnHandle(item) {
-            const target_dialog = this.dropdown_add_item.map(e => e.title).indexOf(item.learning_type);
+            const target_dialog = this.dropdown_add_item.map(e => e.value).indexOf(item.learning_type);
             this.dialog[target_dialog].isOpen = true
             this.dialog[target_dialog].type = 'edit'
             switch (item.learning_type) {
-                case 'คู่มือสนุกคิด':
+                case 'manual':
                     this.addManualForm = item
                     break;
-                case 'สื่อสนุกคิด':
+                case 'media':
                     this.addMediaForm = item
                     break;
-                case 'แหล่งเรียนรู้อื่น':
+                case 'another':
                     this.addAnotherResourceForm = item
                     break;
                 default:
@@ -532,7 +547,10 @@ export default {
         },
         deleteLearningResource(target_id) {
             this.$store.dispatch("deleteLearningResource", target_id).then((_) => {
+                const data = this.learning_resource
+                this.$store.dispatch("deleteLearningResourceImage", data).then((_) => {
                 this.requestData()
+            })
             })
         },
         deleteStudent(target_id) {
@@ -562,6 +580,7 @@ export default {
     computed: {
         ...mapGetters({
             learning_resource_data: "LEARNING_RESOURCE_LIST",
+            learning_resource: "LEARNING_RESOURCE",
         }),
         filteredItems() {
             var filtered = Object.values(this.learning_data)

@@ -57,25 +57,25 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12" sm="8" md="8">
-                                <v-text-field label="ชื่อผู้ใช้งาน" counter maxlength="20" :rules="[rules.required]" required v-model="add_admin_form.username">
+                                <v-text-field label="ชื่อผู้ใช้งาน" clearable counter maxlength="20" :rules="[rules.required]" required v-model="add_admin_form.username">
                                 </v-text-field>
                             </v-col>
                             <v-col cols="12" sm="4" md="4">
                                 <v-select :items="roles" item-text="title" item-value="keyword" label="ตำแหน่ง" :rules="[rules.required]" v-model="add_admin_form.role"></v-select>
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
-                                <v-text-field label="รหัสผ่าน" counter maxlength="20" :rules="[rules.required, rules.counter]" type="password" v-model="add_admin_form.password">
+                                <v-text-field label="รหัสผ่าน" clearable counter maxlength="20" :rules="[rules.required, rules.counter]" type="password" v-model="add_admin_form.password">
                                 </v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
-                                <v-text-field label="ยืนยันรหัสผ่าน" counter maxlength="20" :rules="[rules.required, rules.counter,  rules.confirmPassword]" type="password" v-model="confirmPassword">
+                                <v-text-field label="ยืนยันรหัสผ่าน" clearable counter maxlength="20" :rules="[rules.required, rules.counter,  rules.confirmPassword]" type="password" v-model="confirmPassword">
                                 </v-text-field>
                             </v-col>
                             <v-col cols="12" class="bg-title">
                                 <h3>ที่อยู่</h3>
                             </v-col>
                             <v-col cols="12" sm="8" md="8">
-                                <v-text-field label="อีเมลล์" :rules="[rules.required, rules.email]" v-model="add_admin_form.email"></v-text-field>
+                                <v-text-field label="อีเมลล์" clearable :rules="[rules.required, rules.email]" v-model="add_admin_form.email"></v-text-field>
                             </v-col>
                         </v-row>
 
@@ -156,7 +156,13 @@ export default {
                 mid_admin: 'แอดมินระดับกลาง',
                 super_admin: 'แอดมินสูงสุด'
             },
-            roles: [{
+            roles: [
+                {
+                    title: 'ผู้ใช้ทั่วไป',
+                    des: '',
+                    keyword: 'normalUser'
+                },
+                {
                     title: 'แอดมินทั่วไป',
                     des: '',
                     keyword: 'admin'
@@ -253,31 +259,78 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// #manage-admin-view {
+//     background-color: blueviolet;
+//     height: 90vh;
+//     width: 100%;
+// }
+
+// .main-search-table {
+//     height: 100%;
+// }
+
+// .search-bar {
+//     height: 15%;
+// }
+
+// .header-table {
+//     position: sticky;
+//     top: 0;
+// }
+
+// .admin-table {
+//     height: 85%;
+//     overflow-y: scroll !important;
+// }
+
+// .tbody-container {
+//     height: 100%;
+// }
 #manage-admin-view {
-    background-color: blueviolet;
-    height: 90vh;
-    width: 100%;
+    width: 100vw;
+    min-height: 90vh;
+    background-color: #E4E3FF;
+    padding: 2%;
+
 }
 
 .main-search-table {
-    height: 100%;
+    // height: 50%;
+    // overflow-y: hidden;
 }
 
 .search-bar {
-    height: 15%;
+    padding-left: 5%;
+    padding-right: 5%;
 }
 
-.header-table {
-    position: sticky;
-    top: 0;
+.search-bar-title {
+    width: 100%;
+    padding: 10px 5% 10px 5%;
+    column-gap: 2%;
+    display: flex;
+    background-color: #B499FF;
+    border-radius: 10px;
 }
 
-.admin-table {
-    height: 85%;
-    overflow-y: scroll !important;
+.table-column {
+    max-width: 150px;
+    // width: 100px;
+    overflow-x: scroll;
 }
 
-.tbody-container {
-    height: 100%;
+.bg-title {
+    background-color: #C7B2FF;
+}
+
+.tbody-custom {
+    height: 100px !important;
+    overflow-y: hidden !important;
+}
+
+@media only screen and (max-width: $media-size-mobile) {
+    .search-bar-title {
+        flex-direction: column;
+    }
 }
 </style>

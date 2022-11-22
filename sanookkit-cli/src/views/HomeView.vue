@@ -5,13 +5,13 @@
         <h1>เราแจกไปแล้วกว่า</h1>
         <b-row id="paralax-number">
             <b-col v-for="(deal, index) of amountDeal" :key="index" md="4">
-                <number tag="h1" class="large-text" :ref="index.toString()" :format="formatRunNumber" :to="deal.quantity" :duration="1" animationPaused />
+                <number tag="h1" :class="`paralax-text-${index}`" :ref="index.toString()" :format="formatRunNumber" :to="deal.quantity" :duration="1" animationPaused />
                 <h3>{{deal.unit}}</h3>
             </b-col>
         </b-row>
     </div>
     <div id="activity-section">
-        <v-carousel cycle hide-delimiter-background show-arrows-on-hover height="700px">
+        <v-carousel class="p-10" cycle hide-delimiter-background show-arrows-on-hover height="700px">
             <v-carousel-item :src="require('../assets/IMG_3178.jpg')">
             </v-carousel-item>
             <v-carousel-item :src="require('../assets/IMG_3179.jpg')">
@@ -25,12 +25,12 @@
         <div class="overflow-mask">
             <v-card v-for="(news, index) of newsList" :key="index" class="mx-auto" max-width="344">
                 <v-img :src="news.img_url" height="200px"></v-img>
-                <v-card-subtitle class="text-wrap">
+                <v-card-subtitle class="text-wrap" :style="{fontSize: '22px'}">
                     {{news.description}}
                 </v-card-subtitle>
 
                 <v-card-actions>
-                    <v-card-subtitle>{{news.date}}</v-card-subtitle>
+                    <v-card-subtitle :style="{fontSize: '18px'}">{{news.date}}</v-card-subtitle>
                     <v-spacer></v-spacer>
                 </v-card-actions>
             </v-card>
@@ -40,18 +40,19 @@
         <v-container>
         <v-row class="pb-5 pt-5 h-100">
             <v-col md="6">
-                <h3>sanookit</h3>
+                <h3 :style="{fontSize: '22px'}">Sanook Kit</h3>
             </v-col>
-            <v-col md="3">
+            <v-col md="3" :style="{fontSize: '20px'}">
                 <h4>ช่องทางติดต่อ</h4>
                 <div><v-icon>mdi-email-outline</v-icon> sanookkit@sanookkit.com</div>
+                <div><v-icon>mdi-email-outline</v-icon> sanookkitthai@gmail.com</div>
             </v-col>
-            <v-col md="3">
+            <v-col md="3" :style="{fontSize: '22px'}">
                 <h4 class="w-100 text-center">ช่องทางติดต่อ</h4>
-                <div><v-btn @click="$router.push('/')" text small class="w-100 text-md-left">หน้าหลัก</v-btn></div>
-                <div><v-btn @click="$router.push('/about')" text small class="w-100 text-md-left">เกี่ยวกับ</v-btn></div>
-                <div><v-btn @click="$router.push('/learning-resource')" text small class="w-100 text-md-left">แหล่งเรียนรู้</v-btn></div>
-                <div><v-btn @click="$router.push('/tracking')" text small class="w-100 text-md-left">ติดตามกระเป๋า</v-btn></div>
+                <div><v-btn @click="$router.push('/')" text small class="w-100 text-md-left" :style="{fontSize: '22px'}">หน้าหลัก</v-btn></div>
+                <div><v-btn @click="$router.push('/about')" text small class="w-100 text-md-left" :style="{fontSize: '22px'}">เกี่ยวกับ</v-btn></div>
+                <div><v-btn @click="$router.push('/learning-resource')" text small class="w-100 text-md-left" :style="{fontSize: '22px'}">แหล่งเรียนรู้</v-btn></div>
+                <div><v-btn @click="$router.push('/tracking')" text small class="w-100 text-md-left" :style="{fontSize: '22px'}">ติดตามกระเป๋า</v-btn></div>
             </v-col>
         </v-row>
         <hr/>
@@ -66,6 +67,9 @@
 </template>
 
 <script>
+import {
+    mapGetters
+} from "vuex";
 import {
     AMOUNT_DEAL,
     ACTIVITY_IMAGE_LIST,
@@ -88,6 +92,7 @@ export default {
     },
     mounted() {
         this.setupData()
+        this.requestData()
     },
     created() {
         window.addEventListener('scroll', this.eventScrollHandler);
@@ -97,7 +102,7 @@ export default {
     },
     methods: {
         setupData() {
-            this.amountDeal = AMOUNT_DEAL
+            // this.amountDeal = AMOUNT_DEAL
             this.newsList = NEWS_LIST
             this.activityList = ACTIVITY_IMAGE_LIST
         },
@@ -131,7 +136,38 @@ export default {
         },
         completed() {
             console.log(this.$refs.number2)
+        },
+        requestData() {
+            this.$store.dispatch("getStudentList").then(() => {
+                const schools = []
+                const cities = []
+                this.student_data.filter((student) => {
+                    if (schools.indexOf(student.school) == -1) {
+                        schools.push(student.school)
+                    }
+                    if (cities.indexOf(student.address.city) == -1) {
+                        cities.push(student.address.city)
+                    }
+                })
+                this.amountDeal.push({
+                    quantity: schools.length,
+                    unit: "โรงเรียน"
+                })
+                this.amountDeal.push({
+                    quantity: this.student_data.length,
+                    unit: "ใบ"
+                })
+                this.amountDeal.push({
+                    quantity: cities.length,
+                    unit: "จังหวัด"
+                })
+            })
         }
+    },
+    computed: {
+        ...mapGetters({
+            student_data: "STUDENT_LIST",
+        }),
     }
 }
 </script>
@@ -164,6 +200,55 @@ export default {
     width: 100%;
     margin: 0 !important;
 }
+
+.paralax-text-0 {
+    font-size: 124px;
+    /* -webkit-text-stroke-width: 5px;
+    -webkit-text-stroke-color: rgb(255, 255, 255); */
+    color: #D0E6A5;
+    /* filter: drop-shadow(0 0 0.75rem rgba(0,0,0,0.29)); */
+    text-shadow: 5px 0px 0px #a7c36f,
+-5px 5px 0px #a7c36f,
+5px -5px 0px #a7c36f,
+5px 5px 0px #a7c36f,
+-5px -5px 0px #a7c36f,
+-5px 0px 0px #a7c36f,
+0px -5px 0px #a7c36f,
+0px 5px 0px #a7c36f;
+}
+/* #86E3CE #D0E6A5 #FFDD94 */
+.paralax-text-1 {
+    font-size: 124px;
+    /* -webkit-text-stroke-width: 5px;
+    -webkit-text-stroke-color: rgb(255, 255, 255); */
+    color: #86E3CE;
+    /* filter: drop-shadow(0 0 0.75rem rgba(0,0,0,0.29)); */
+    text-shadow: 5px 0px 0px #63c8b1,
+-5px 5px 0px #63c8b1,
+5px -5px 0px #63c8b1,
+5px 5px 0px #63c8b1,
+-5px -5px 0px #63c8b1,
+-5px 0px 0px #63c8b1,
+0px -5px 0px #63c8b1,
+0px 5px 0px #63c8b1;
+}
+
+.paralax-text-2 {
+    font-size: 124px;
+    /* -webkit-text-stroke-width: 5px;
+    -webkit-text-stroke-color: rgb(255, 255, 255); */
+    color: #FFDD94;
+    /* filter: drop-shadow(0 0 0.75rem rgba(0,0,0,0.29)); */
+    text-shadow: 5px 0px 0px #f0c977,
+-5px 5px 0px #f0c977,
+5px -5px 0px #f0c977,
+5px 5px 0px #f0c977,
+-5px -5px 0px #f0c977,
+-5px 0px 0px #f0c977,
+0px -5px 0px #f0c977,
+0px 5px 0px #f0c977;
+}
+
 
 #paralax-number div {
     text-align: center;

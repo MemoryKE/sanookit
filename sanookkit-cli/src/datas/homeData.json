@@ -27,34 +27,44 @@
     ],
     "NEWS_LIST": [
         {
-            "img_url": "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-            "description": "Permalink to เปิดห้องเรียนต้นแบบ Active Learning เตรียมพร้อมทักษะในศตวรรษ 21 รับมือความผันผวนท้าทายของตลาดงานในอนาคต",
-            "date": "25-08-2526"
+            "img_url": "https://www.eef.or.th/wp-content/uploads/2022/11/06-จังหวัดสุรินทร์-ร่วมกับ-กสศ_B-768x511.jpg",
+            "description": "จังหวัดสุรินทร์ ร่วมกับ กสศ. ประกาศเจตนารมณ์ ‘ไม่ทิ้งใครไว้ข้างหลัง’ ยกระดับกลไกพื้นที่",
+            "date": "7 พฤษจิกายน 2565"
         },
         {
-            "img_url": "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-            "description": "Permalink to เปิดห้องเรียนต้นแบบ Active Learning เตรียมพร้อมทักษะในศตวรรษ 21 รับมือความผันผวนท้าทายของตลาดงานในอนาคต",
-            "date": ""
+            "img_url": "https://www.eef.or.th/wp-content/uploads/2022/11/Smart-banner-768x511.jpg",
+            "description": "พม. ร่วมมือ กสศ. เปิดตัว ‘อพม. SMART’ ระบบนำร่องช่วยเหลือเด็กเยาวชนกลุ่มเปราะบางทั่วประเทศ",
+            "date": "6 พฤศจิกายน 2565"
         },
         {
-            "img_url": "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-            "description": "Permalink to เปิดห้องเรียนต้นแบบ Active Learning เตรียมพร้อมทักษะในศตวรรษ 21 รับมือความผันผวนท้าทายของตลาดงานในอนาคต",
-            "date": ""
+            "img_url": "https://www.eef.or.th/wp-content/uploads/2022/10/01-กสศ.-จับมือยูเนสโก-จัดประชุม_B-768x511.jpg",
+            "description": "กสศ. จับมือยูเนสโก จัดประชุม กลุ่มพันธมิตรเพื่อความเสมอภาคทางการศึกษา (EEA) ครั้งที่ 5",
+            "date": "2 พฤศจิกายน 2565"
         },
         {
-            "img_url": "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-            "description": "Permalink to เปิดห้องเรียนต้นแบบ Active Learning เตรียมพร้อมทักษะในศตวรรษ 21 รับมือความผันผวนท้าทายของตลาดงานในอนาคต",
-            "date": ""
+            "img_url": "https://www.eef.or.th/wp-content/uploads/2022/11/สพฐ.-กสศ.-พร้อมจัดสรร-ทุนเสมอภาค_B-2-768x511.jpg",
+            "description": "สพฐ. – กสศ. พร้อมจัดสรร ‘ทุนเสมอภาค’ เทอม 2/2565 มุ่งยกระดับฐานข้อมูลนักเรียนเข้าสู่ระบบหลักประกันโอกาสทางการศึกษา",
+            "date": "2 พฤศจิกายน 2565"
         },
         {
-            "img_url": "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-            "description": "Permalink to เปิดห้องเรียนต้นแบบ Active Learning เตรียมพร้อมทักษะในศตวรรษ 21 รับมือความผันผวนท้าทายของตลาดงานในอนาคต",
-            "date": ""
+            "img_url": "https://www.eef.or.th/wp-content/uploads/2022/11/bannerปกติ-768x479.jpg",
+            "description": "ผลสำรวจล่าสุดกรมอนามัย สอดคล้องผลวิจัยกสศ.พบ 1 ใน 4 เด็กปฐมวัยพัฒนาล่าช้า ชี้โจทย์สำคัญเปิดเทอมใหม่ 2/2565",
+            "date": "1 พฤศจิกายน 2565"
         },
         {
-            "img_url": "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-            "description": "Permalink to เปิดห้องเรียนต้นแบบ Active Learning เตรียมพร้อมทักษะในศตวรรษ 21 รับมือความผันผวนท้าทายของตลาดงานในอนาคต",
-            "date": ""
+            "img_url": "https://www.eef.or.th/wp-content/uploads/2022/11/รมส่งเสริมการปกครองท้องถิ่น-กสศ_B-768x511.jpg",
+            "description": "กรมส่งเสริมการปกครองท้องถิ่น – กสศ. ร่วม MOU เดินหน้า ‘ระบบหลักประกันความเสมอภาคทางการศึกษา’ ผ่านเครือข่าย อปท. ทั่วประเทศ",
+            "date": "1 พฤศจิกายน 2565"
+        },
+        {
+            "img_url": "https://www.eef.or.th/wp-content/uploads/2022/10/01-กสศ.-จับมือยูเนสโก-จัดประชุม_B-768x511.jpg",
+            "description": "กสศ. จับมือยูเนสโก จัดประชุม กลุ่มพันธมิตรเพื่อความเสมอภาคทางการศึกษา (EEA) ครั้งที่ 5",
+            "date": "27 ตุลาคม 2565"
+        },
+        {
+            "img_url": "https://www.eef.or.th/wp-content/uploads/2022/10/bannerปกติ-2-768x479.jpg",
+            "description": "การประชุมวิชาการนานาชาติเพื่อความเสมอภาคทางการศึกษา: ก้าวสู่ความเสมอภาคไปด้วยกัน",
+            "date": "25 ตุลาคม 2565"
         }
     ]
 }

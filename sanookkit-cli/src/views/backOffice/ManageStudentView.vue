@@ -31,11 +31,11 @@
                                             <v-container>
                                                 <v-row>
                                                     <v-col cols="12" sm="6" md="6">
-                                                        <v-text-field label="รหัสกระเป๋า" :rules="[rules.required]" required v-model="add_form_field.bag_id">
-                                                        </v-text-field>
+                                                        <!-- <v-text-field label="รหัสกระเป๋า" :rules="[rules.required]" required v-model="add_form_field.bag_id">
+                                                        </v-text-field> -->
                                                     </v-col>
                                                     <v-col cols="12" sm="6" md="6">
-                                                        <v-text-field label="รหัสประชาชน" counter maxlength="13" :rules="[rules.required, rules.counter]" v-model="add_form_field.id_card">
+                                                        <v-text-field label="รหัสประชาชน" counter maxlength="13" :rules="[rules.required, rules.couter13]" v-model="add_form_field.id_card">
                                                         </v-text-field>
                                                     </v-col>
                                                     <v-col cols="12" sm="2" md="2">
@@ -129,11 +129,11 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12" sm="6" md="6">
-                                <v-text-field label="รหัสกระเป๋า" :rules="[rules.required]" required v-model="add_form_field.bag_id">
+                                <v-text-field label="รหัสกระเป๋า" :rules="[rules.required]" disabled required v-model="add_form_field.bag_id">
                                 </v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
-                                <v-text-field label="รหัสประชาชน" counter maxlength="13" :rules="[rules.required, rules.counter]" v-model="add_form_field.id_card">
+                                <v-text-field label="รหัสประชาชน" counter maxlength="13" :rules="[rules.required, rules.couter13]" v-model="add_form_field.id_card">
                                 </v-text-field>
                             </v-col>
                             <v-col cols="12" sm="2" md="2">
@@ -205,6 +205,7 @@ export default {
     data() {
         return {
             rules: {
+                couter13: value => value.length == 13 || 'กรุณากรอกให้ครบ 13 หลัก',
                 required: value => !!value || 'Required.',
                 counter: value => value.length <= 20 || 'Max 20 characters',
                 email: value => {
@@ -312,7 +313,7 @@ export default {
                     value: 6
                 }
             ],
-            items: [],
+            students: [],
             city_list: [],
             district_list: [],
             subdistrict_list: [],
@@ -369,8 +370,17 @@ export default {
             })
             this.default_filter.postal_code_list = [...set]
         },
+        addZeroFormat(number, digits) {
+            var strNumber = number.toString()
+            for(let i = 0; i < digits; i++) {
+                if(strNumber.length >=  digits) return strNumber
+                strNumber = `0${strNumber}`
+            }
+            return strNumber
+        },
         submitAddForm() {
             if (this.$refs.addFieldForm[0].validate()) {
+                this.add_form_field.bag_id = `${this.add_form_field.grade}${this.addZeroFormat(this.students.length+1, 3)}`
                 this.$store.dispatch("addNewStudent", this.add_form_field).then((_) => {
                     this.addDataDialog = false
                     this.requestData()
@@ -471,7 +481,7 @@ export default {
                     item["address_string"] = `${address.house_no} ${address.road} ${address.district} ${address.subdistrict} ${address.city} ${address.postal_code}`
                     item["grade_string"] = this.grade_list[item.grade - 1].text
                 })
-                this.items = this.student_data
+                this.students = this.student_data
             })
         }
     },
@@ -480,7 +490,7 @@ export default {
             student_data: "STUDENT_LIST",
         }),
         filteredItems() {
-            var filtered = Object.values(this.items)
+            var filtered = Object.values(this.students)
             this.searchs.forEach((search) => {
                 const lowTextSearch = search.search.toString().toLowerCase()
                 filtered = filtered.filter((item) => item[search.key].toString().toLowerCase().includes(lowTextSearch))

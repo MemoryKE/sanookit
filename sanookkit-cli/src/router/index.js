@@ -13,6 +13,9 @@ import ManageAdminView from '@/views/backOffice/ManageAdminView.vue'
 import SigninView from '@/views/authentication/SigninView.vue'
 import SignupView from '@/views/authentication/SignupView.vue'
 import AboutBagView from '@/views/AboutBagView.vue'
+import {
+  scrkey
+} from '../datas/localvalue.json'
 
 Vue.use(VueRouter)
 
@@ -35,18 +38,12 @@ const routes = [
   {
     path: '/learning-resource',
     name: 'PDFShowView',
-    component: PDFShowView,
-    meta: {
-      auth: true
-    }
+    component: PDFShowView
   },
   {
     path: '/learning-resource',
     name: 'LearningDetail',
-    component: LearningDetail,
-    meta: {
-      auth: true
-    }
+    component: LearningDetail
   },
   {
     path: '/about-bag',
@@ -56,27 +53,42 @@ const routes = [
   {
     path: '/tracking',
     name: 'track my bag',
-    component: TrackingView
+    component: TrackingView,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: DashboardView
+    component: DashboardView,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/manage-student',
     name: 'ManageStudentView',
-    component: ManageStudentView
+    component: ManageStudentView,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/manage-learning-resource',
     name: 'ManageLearningResourceView',
-    component: ManageLearningResourceView
+    component: ManageLearningResourceView,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/manage-admin',
     name: 'ManageAdminView',
-    component: ManageAdminView
+    component: ManageAdminView,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/signin',
@@ -100,6 +112,36 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+const CryptoJS = require("crypto-js")
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    const access_token = localStorage.getItem('accessToken') || null
+    var parseToken
+    if (access_token != null) {
+      const bytes = CryptoJS.AES.decrypt(access_token, scrkey)
+      const originalText = bytes.toString(CryptoJS.enc.Utf8)
+      parseToken = JSON.parse(originalText)
+    }
+    
+    if (to.name == "track my bag") {
+      if (access_token == null) {
+        router.push({ name: 'signin'})
+      } else {
+        next()
+      }
+    } else if (parseToken?.role == 'normalUser') {
+      router.push({ name: 'adminSignin' })
+    } else {
+      next() // go to wherever I'm going
+    }
+  } else {
+    next() // does not require auth, make sure to always call next()!
+  }
 })
 
 export default router

@@ -1,35 +1,37 @@
 import axios from "axios";
 
-const baseURL = "http://127.0.0.1:3000";
+// const baseURL = "http://127.0.0.1:3000";
+const baseURL = 'https://powerful-plateau-61537.herokuapp.com'
+const storageBaseURL = 'https://www.sanookkit.com/sanookkit_backend'
 
 export const actions = {
   async getStudentList({ commit }) {
     try {
-      //   commit("loadingFullPageMutation", true);
+        commit("loadingFullPageMutation", true);
       return await axios
         .get(`${baseURL}/student/`)
         .then((response) => {
-          //   commit("loadingFullPageMutation", false);
+            commit("loadingFullPageMutation", false);
           // console.log(response.data)
           commit("studentListMutation", response.data);
         });
     } catch (err) {
-      //   commit("loadingFullPageMutation", false);
+        commit("loadingFullPageMutation", false);
       console.error(err);
     }
   },
   async addNewStudent({ commit }, student) {
     try {
-      //   commit("loadingFullPageMutation", true);
+        commit("loadingFullPageMutation", true);
       return await axios
         .post(`${baseURL}/student/`, student)
         .then((response) => {
-          //   commit("loadingFullPageMutation", false);
+            commit("loadingFullPageMutation", false);
           // console.log(response.data)
           // commit("studentListMutation", response.data);
         });
     } catch (err) {
-      //   commit("loadingFullPageMutation", false);
+        commit("loadingFullPageMutation", false);
       console.error(err);
     }
   },
@@ -65,13 +67,50 @@ export const actions = {
   },
   async getLearningResourceList({ commit }) {
     try {
-      //   commit("loadingFullPageMutation", true);
+        commit("loadingFullPageMutation", true);
       return await axios
         .get(`${baseURL}/learning-resource/`)
         .then((response) => {
-          //   commit("loadingFullPageMutation", false);
+            commit("loadingFullPageMutation", false);
           // console.log(response.data)
           commit("learningResourceListMutation", response.data);
+        });
+    } catch (err) {
+        commit("loadingFullPageMutation", false);
+      console.error(err);
+    }
+  },
+  async addLearningResourceImageList({ commit }, learning_resources) {
+    try {
+      //   commit("loadingFullPageMutation", true);
+      return await axios
+        .post(`${storageBaseURL}/learning-resource/`, learning_resources, {headers: {
+          'Content-Type': 'multipart/form-data'
+        }})
+        .then((response) => {
+          console.log(response)
+          commit("learningResourceMutation", response.data);
+          //   commit("loadingFullPageMutation", false);
+          // console.log(response.data)
+          // commit("studentListMutation", response.data);
+        });
+    } catch (err) {
+      //   commit("loadingFullPageMutation", false);
+      console.error(err);
+    }
+  },
+  async addCliImageList({ commit }, cliImg) {
+    try {
+      //   commit("loadingFullPageMutation", true);
+      return await axios
+        .post(`${storageBaseURL}/upload-cli-img/`, cliImg, {headers: {
+          'Content-Type': 'multipart/form-data'
+        }})
+        .then((response) => {
+          console.log(response)
+          //   commit("loadingFullPageMutation", false);
+          // console.log(response.data)
+          // commit("studentListMutation", response.data);
         });
     } catch (err) {
       //   commit("loadingFullPageMutation", false);
@@ -81,15 +120,10 @@ export const actions = {
   async addLearningResourceList({ commit }, learning_resources) {
     try {
       //   commit("loadingFullPageMutation", true);
-      return await axios
-        .post(`${baseURL}/learning-resource/`, learning_resources, {headers: {
-          'Content-Type': 'multipart/form-data'
-        }})
-        .then((response) => {
-          //   commit("loadingFullPageMutation", false);
-          // console.log(response.data)
-          // commit("studentListMutation", response.data);
-        });
+      return await  axios
+      .post(`${baseURL}/learning-resource/`, learning_resources).then((res) => {
+        console.log('uploaded')
+      })
     } catch (err) {
       //   commit("loadingFullPageMutation", false);
       console.error(err);
@@ -100,6 +134,23 @@ export const actions = {
       //   commit("loadingFullPageMutation", true);
       return await axios
         .delete(`${baseURL}/learning-resource/${id}`)
+        .then((response) => {
+          console.log(response)
+          commit("learningResourceMutation", response.data);
+          //   commit("loadingFullPageMutation", false);
+          // console.log(response.data)
+          // commit("studentListMutation", response.data);
+        });
+    } catch (err) {
+      //   commit("loadingFullPageMutation", false);
+      console.error(err);
+    }
+  },
+  async deleteLearningResourceImage({ commit }, learning_resources) {
+    try {
+      //   commit("loadingFullPageMutation", true);
+      return await axios
+        .post(`${storageBaseURL}/delete-learning-resource/`, learning_resources)
         .then((response) => {
           //   commit("loadingFullPageMutation", false);
           // console.log(response.data)
@@ -149,10 +200,13 @@ export const actions = {
   },
   async signin({ commit }, user) {
     try {
+      commit("loadingFullPageMutation", true);
       return await axios.post(`${baseURL}/signin`, user).then((res) => {
+        commit("loadingFullPageMutation", false);
         commit('signinMutation', res.data)
       })
     } catch (err) {
+      commit("loadingFullPageMutation", false);
       console.log(err)
     }
   }

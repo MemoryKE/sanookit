@@ -1,7 +1,6 @@
 <template>
 <div class="learning-resource">
     <div class="grade-selector" >
-       <v-btn> <h4>filter</h4></v-btn>
     <v-select item-text="title" solo item-value="value" v-model="selectedGrade" :items="gradeLists" /></div>
     <h1 class="title-1">คู่มือสนุกคิด</h1>
     <div class="overflow-mask">
@@ -21,7 +20,7 @@
                     <h5>{{item.title}}</h5>
                     <!-- <p>{{item.description}}</p> -->
                     <v-chip-group active-class="deep-purple accent-4 white--text" row>
-                        <v-chip>{{gradeLists[item.grade].title}}</v-chip>
+                        <v-chip class="grade">{{gradeLists[item.grade].title}}</v-chip>
 
                         <!-- <v-chip>7:30PM</v-chip> -->
                     </v-chip-group>
@@ -42,7 +41,7 @@
                         {{item.title}}
                     </v-list-item-title>
                     <v-chip-group active-class="deep-purple accent-4 white--text" row>
-                        <v-chip>{{gradeLists[item.grade].title}}</v-chip>
+                        <v-chip class="white-text grade">{{gradeLists[item.grade].title}}</v-chip>
                     </v-chip-group>
                 </v-list-item-content>
 
@@ -53,7 +52,7 @@
 
             <v-card-actions>
 
-                <v-btn :href="item.refer_link" outlined rounded text>
+                <v-btn class="refer-btn" :href="item.refer_link" outlined rounded text target="_blank">
                     ไปยังแหล่งอ้างอิง
                 </v-btn>
             </v-card-actions>
@@ -72,7 +71,7 @@ export default {
     name: 'LearningResource',
     data() {
         return {
-            baseURL: "http://127.0.0.1:3000/assets/",
+            baseURL: "https://www.sanookkit.com/assets/",
             selectedGrade: 0,
             gradeLists: [{
                     title: "ทั้งหมด",
@@ -177,9 +176,9 @@ export default {
         requestData() {
             this.$store.dispatch("getLearningResourceList").then(() => {
                 console.log(this.learning_resource_data)
-                this.manualList = this.learning_resource_data.filter((item) => item.learning_type == 'คู่มือสนุกคิด')
-                this.sanookit_item = this.learning_resource_data.filter((item) => item.learning_type == 'สื่อสนุกคิด')
-                this.authorList = this.learning_resource_data.filter((item) => item.learning_type == 'แหล่งเรียนรู้อื่น')
+                this.manualList = this.learning_resource_data.filter((item) => item.learning_type == 'manual')
+                this.sanookit_item = this.learning_resource_data.filter((item) => item.learning_type == 'media')
+                this.authorList = this.learning_resource_data.filter((item) => item.learning_type == 'another')
             })
         }
     },
@@ -279,6 +278,15 @@ export default {
     scroll-padding: 10px;
 }
 
+.overflow-mask::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+.overflow-mask::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(255, 131, 131, 0.5);
+  box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
 .book {
     width: 280px;
     background-color: rgb(255, 255, 255);
@@ -319,6 +327,15 @@ export default {
     max-height: 50%; */
 }
 
+.v-chip.grade {
+    color: white !important;
+  background: #FC877D !important;
+}
+
+.refer-btn {
+    color: white !important;
+  background: #95D5D2 !important;
+}
 /*  */
 .sanookit-item-view {
     width: 100%;

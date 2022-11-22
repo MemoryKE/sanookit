@@ -1,7 +1,8 @@
 <template>
 <div class="login-page">
     <div class="img">
-        <v-img src="@/assets/bg_signin.png"></v-img>
+        <img src="../../assets/bg_signin.png" >
+        <!-- <img src="@/assets/bg_signin.png" /> -->
     </div>
     <div class="login">
         <h1 class="header-app">{{title}}</h1>
@@ -38,7 +39,7 @@ export default {
     name: 'SigninView',
     data() {
         return {
-            title: "SANOOKKIT",
+            title: "Sanook Kit",
             type: 'homepage',
             btn_text: "เข้าสู่ระบบ",
             rules: {
@@ -71,7 +72,8 @@ export default {
                  }); 
             } else {
                 this.$router.push({
-                    path: "/dashboard"
+                    path: "/manage-student"
+                    // path: "/dashboard"
                  });
             }
         }
@@ -99,11 +101,12 @@ export default {
                             });
                             break;
                         case 'admin':
-                            if (token.role == 'customer') { return }
+                            if (token.role == 'normalUser') { return }
                             else {
                                 localStorage.setItem('accessToken', this.res_signin.token);
                                 this.$router.push({
-                                    path: "/dashboard"
+                                    path: "/manage-student"
+                                    // path: "/dashboard"
                                 });
                             }
                             break;
@@ -192,6 +195,8 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    background-image: url('https://www.sanookkit.com/assets/7de525499fd20cb5da18182b27bfc5a2');
+    background-size: 100% 100%;
     width: 50%;
     height: 100%;
 }

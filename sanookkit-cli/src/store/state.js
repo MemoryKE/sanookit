@@ -1,6 +1,8 @@
 export const state = {
     studentList: [],
     learningResourceList: [],
+    learningResource: {},
     userList: [],
-    signin: []
+    signin: [],
+    loadingFullPage: false
 }

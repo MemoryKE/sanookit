@@ -1,7 +1,7 @@
 <template>
     <div class="login-page">
         <div class="img">
-            <v-img src="@/assets/bg_signin.png"></v-img>
+            <img :src="require('../../assets/bg_signin.png')" />
         </div>
         <div class="login">
             <h1 class="header-app">{{title}}</h1>
@@ -47,7 +47,7 @@
             return {
                 title: "ลงทะเบียนผู้ใช้",
                 type: 'homepage',
-                btn_text: "เข้าสู่ระบบ",
+                btn_text: "ลงทะเบียน",
                 rules: {
                     required: value => !!value || 'Required.',
                     counter: value => value.length <= 20 || 'Max 20 characters',

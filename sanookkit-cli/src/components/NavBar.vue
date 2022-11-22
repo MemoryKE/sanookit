@@ -8,7 +8,7 @@
 
     <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="left-navbar">
-            <b-nav-item v-for="(tab, index) of current_tabs" :key="index" :href="tab.link" :class="tabIsActive(tab.link) ? 'active' : 'normal'">
+            <b-nav-item v-for="(tab, index) of current_tabs" :key="index" @click="$router.push(tab.link)" :class="tabIsActive(tab.link) ? 'active' : 'normal'">
                 <span>{{tab.title}}</span>
             </b-nav-item>
             <!-- <b-nav-item href="#" disabled>Disabled</b-nav-item> -->
@@ -48,7 +48,7 @@ export default {
                     isActive: false
                 },
                 {
-                    title: 'ถุงยังชีพทางการศึกษา',
+                    title: 'ถุงสนุกคิด',
                     link: '/about-bag',
                     isActive: false
                 },
@@ -63,11 +63,12 @@ export default {
                     isActive: false
                 },
             ],
-            dashboard_tabs: [{
-                    title: 'หน้าหลัก',
-                    link: '/dashboard',
-                    isActive: true
-                },
+            dashboard_tabs: [
+                // {
+                //     title: 'หน้าหลัก',
+                //     link: '/dashboard',
+                //     isActive: true
+                // },
                 {
                     title: 'ข้อมูลนักเรียน',
                     link: '/manage-student',
@@ -144,21 +145,21 @@ export default {
 <style lang="scss" scoped>
 .active span {
     color: #FC877D !important;
-    font-size: larger;
+    font-size: 22px;
     font-weight: 900;
 
 }
 
 .normal span {
     color: gray;
-    font-size: small;
+    font-size: 18px;
 }
 
 .cli-nav {
     position: fixed;
     z-index: 10;
     width: 100vw;
-    height: 10vh;
+    height: 12vh;
 }
 
 .right-navbar {
@@ -167,6 +168,7 @@ export default {
 
 .login-btn {
     color: white !important;
+    font-size: 18px;
     background-color: #CFABDB !important;
     border-width: 0;
     box-shadow: 0px 0px 8px #cfabdbcc;

@@ -146,7 +146,7 @@ export default {
             console.log(filtered)
             filtered = filtered.filter((item) => item[this.tabsList[this.tab].key].toString().toLowerCase().includes(lowTextSearch))
             console.log(filtered)
-            return filtered.length == 1 ? filtered[0] : {
+            return filtered.length == 1 && this.tabsList[this.tab].value.toString() != "" ? filtered[0] : {
                 grade_string: '',
                 fullname: '',
                 bag_id: '',
