@@ -1,15 +1,12 @@
 <template>
 <div id="about_bag_container">
-    <!-- <div class="bag-section">
-        <div id="bag-1" >test bag</div>
-        <div id="item-1" class="item">test item</div>
-    </div> -->
-    
-    <div id="about-bag-with-bg"  >
-            <!-- <v-file-input multiple class="testtt" accept="image/png, image/jpeg, image/bmp" placeholder="Pick an avatar" label="หน้าปกคู่มือสนุกคิด" v-model="addCliImgForm.img" />
-        
-        <v-btn class="testttt" color="blue darken-1" text @click="addCliImg()">
-                    บันทึก
+
+    <div id="about-bag-with-bg">
+
+        <!-- <v-file-input multiple class="testtt" accept="image/png, image/jpeg, image/bmp" placeholder="Pick an avatar" label="หน้าปกคู่มือสนุกคิด" v-model="addCliImgForm.img" /> -->
+        <!--  @click="addCliImg()" -->
+        <!-- <v-btn class="testttt" color="blue darken-1" text @click="dialogTest = true">
+            บันทึก
         </v-btn> -->
     </div>
     <div id="section-2">
@@ -34,7 +31,7 @@
                 <h1><span class="sanook-hl">ถุงสนุกคิด</span> ถูกส่งมอบให้นักเรียน</h1>
             </v-col>
             <v-col v-for="(deal, index) of amountDeal" :key="index" md="4">
-                <number tag="h1" :class="`paralax-text-${index}`" :ref="deal.unit" :format="formatRunNumber" :to="deal.quantity" :duration="1" animationPaused />
+                <number tag="h2" :class="`paralax-text-${index}`" :ref="deal.unit" :format="formatRunNumber" :to="deal.quantity" :duration="1" animationPaused />
                 <h3>{{deal.unit}}</h3>
             </v-col>
         </v-row>
@@ -45,14 +42,14 @@
     </div>
     <div id="bag-items-section">
         <v-row class="bag-items-section-contain" :style="{backgroundColor: bagSelectorColor[bagSelect].bg}">
-            <v-col cols="12" md="4" class="bag-selecter">
+            <v-col cols="12" sm="12" md="4" class="bag-selecter">
                 <div v-for="(item, index) of 6" :key="index" :style="{backgroundColor: bagSelect == index ? '#fff' : bagSelectorColor[bagSelect].card, color: bagSelect == index ?  bagSelectorColor[bagSelect].card : '#fff'}" :class="`select-card ${bagSelect == index ?'select-card-active':'select-card-unactive'}`" @click="selectGradeBagHandle(index)">
-                   <v-img :src="require(`../assets/${bagImgNameList[index]}`)" max-width="100px" />
-                   <span>ถุงสนุกคิด ป. {{item}}</span>
+                    <v-img :src="require(`../assets/${bagImgNameList[index]}`)" max-width="100px" />
+                    <span>ถุงสนุกคิด ป. {{item}}</span>
                 </div>
                 <!-- <v-img @click="selectBagHandle()" v-for="(item, index) of 7" :style="{left: 15 + 10 * index + '%'}" :key="index" src="../assets/bag-1.png" class="bag-in-list" /> -->
             </v-col>
-            <v-col cols="12" md="7" id="bag-items-in-list-contain" class="bag-items-in-list-contain" :style="{backgroundColor: '#fff'}">
+            <v-col cols="12" sm="12" md="7" id="bag-items-in-list-contain" class="bag-items-in-list-contain" :style="{backgroundColor: '#fff'}">
                 <div id="box-dot-list" class="box-dot-list">
 
                     <div v-for="(dot, index) in dotList[bagSelect].dotList" class="dot-pointer" :style="{backgroundColor: bagSelectorColor[bagSelect].card, bottom: dot.bottom, left: dot.left}" @mouseover="mouseOverDotHandle(dot, index)" @mouseleave="mouseLeaveDotHandle"></div>
@@ -70,6 +67,22 @@
         </v-row>
         <!-- <v-img src="../assets/bag-1-items.png" class="bag-items-in-list" /> -->
         <!-- <v-img @click="selectBagHandle()" v-for="(item, index) of 7" :style="{left: 15 + 10 * index + '%'}" :key="index" src="../assets/bag-1.png" class="bag-in-list" /> -->
+    </div>
+    <div id="img-activities-section" >
+        <v-carousel class="p-10" cycle hide-delimiter-background show-arrows-on-hover height="650px" width="auto" >
+            <!-- <v-carousel-item v-for="(item, index) of activities_item" :key="index" :src="`${imgBaseURL}${item.name}`" /> -->
+            <v-carousel-item edger>
+                <v-img class="carousel-img" :src="require('../assets/IMG_3178.jpg')" height="100%" eager/>
+            </v-carousel-item>
+            <v-carousel-item eager>
+                <v-img class="carousel-img" :src="require('../assets/IMG_3179.jpg')" height="100%" eager/>
+            </v-carousel-item>
+            <v-carousel-item eager>
+                <v-img class="carousel-img" :src="require('../assets/IMG_3180.jpg')" height="100%" eager/>
+            </v-carousel-item>
+        </v-carousel>
+        <!-- <img :src="require('../assets/IMG_3178.jpg')" />
+        <img :src="require('../assets/IMG_3178.jpg')" /> -->
     </div>
     <!-- <div :id="`bag-section-${pageIndex+1}`" class="bag-section" v-for="(section, pageIndex) of item_bag_list" :key="pageIndex">
         <v-img v-for="(item, itemIndex) of section.item_list" :key="itemIndex" :src="require(`../assets/${item.img_url}`)" class="bag-item" @mouseover="mouseOver(`bag-section-${pageIndex+1}`, pageIndex, itemIndex)" @mouseleave="mouseleave(pageIndex)" />
@@ -97,6 +110,47 @@ export default {
     name: 'AboutBag',
     data() {
         return {
+            grade_list: [{
+                    text: "ป.1",
+                    value: 1
+                },
+                {
+                    text: "ป.2",
+                    value: 2
+                },
+                {
+                    text: "ป.3",
+                    value: 3
+                },
+                {
+                    text: "ป.4",
+                    value: 4
+                },
+                {
+                    text: "ป.5",
+                    value: 5
+                },
+                {
+                    text: "ป.6",
+                    value: 6
+                }
+            ],
+            rules: {
+                required: value => !!value || 'Required.',
+                counter: value => value.length <= 20 || 'Max 20 characters',
+                email: value => {
+                    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                    return pattern.test(value) || 'Invalid e-mail.'
+                },
+                fileSize: value => !value || value.size < 2000000 || 'Avatar size should be les'
+            },
+            dialogTest: false,
+            addAnotherResourceForm: {
+                title: '',
+                grade: 0,
+                img_file: null,
+                refer_link: ''
+            },
             addCliImgForm: {
                 img: null
             },
@@ -106,8 +160,7 @@ export default {
                 left: 0,
                 top: 0,
             },
-            bagSelectorColor: [
-                {
+            bagSelectorColor: [{
                     card: '#FA897B',
                     bg: '#ffd7cf'
                 },
@@ -581,7 +634,7 @@ export default {
         },
         addCliImg() {
             const cliImg = {
-                imageList: this.addCliImgForm.img
+                img_files: this.addCliImgForm.img
             }
             this.$store.dispatch("addCliImageList", cliImg).then(() => {
 
@@ -622,16 +675,18 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 /* bag */
 .testtt {
     position: absolute;
     bottom: 0%;
 }
+
 .testttt {
     position: absolute;
     bottom: 20%;
 }
+
 .box-dot-list {
     height: 100%;
     width: auto;
@@ -643,6 +698,199 @@ export default {
     /* background-image: url('../assets/bag-1-items.png'); */
     /* background-size: auto 100%;
     background-position: center; */
+}
+
+@media only screen and (min-width: $media-size-laptop) {
+    #paralax-number div h2 {
+        font-size: 124px;
+    }
+
+    #title-section h1 {
+        font-size: 64px;
+    }
+
+    .paralax-text-0 {
+        text-shadow: 5px 0px 0px #a7c36f,
+            -5px 5px 0px #a7c36f,
+            5px -5px 0px #a7c36f,
+            5px 5px 0px #a7c36f,
+            -5px -5px 0px #a7c36f,
+            -5px 0px 0px #a7c36f,
+            0px -5px 0px #a7c36f,
+            0px 5px 0px #a7c36f;
+    }
+
+    /* #86E3CE #D0E6A5 #FFDD94 */
+    .paralax-text-1 {
+        text-shadow: 5px 0px 0px #63c8b1,
+            -5px 5px 0px #63c8b1,
+            5px -5px 0px #63c8b1,
+            5px 5px 0px #63c8b1,
+            -5px -5px 0px #63c8b1,
+            -5px 0px 0px #63c8b1,
+            0px -5px 0px #63c8b1,
+            0px 5px 0px #63c8b1;
+    }
+
+    .paralax-text-2 {
+        text-shadow: 5px 0px 0px #f0c977,
+            -5px 5px 0px #f0c977,
+            5px -5px 0px #f0c977,
+            5px 5px 0px #f0c977,
+            -5px -5px 0px #f0c977,
+            -5px 0px 0px #f0c977,
+            0px -5px 0px #f0c977,
+            0px 5px 0px #f0c977;
+    }
+    #img-activities-section {
+        background-image: url('../assets/about-bag-activities-bg.png');
+        background-size: 100% 100%;
+        width: 100%;
+        height: 100vh;
+        scroll-snap-align: start;
+        display: flex;
+        // flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0 10% 0 10%;
+        // padding-top: 10%;
+    }
+    .carousel-img {
+        height: 100%;
+        width: auto;
+    }
+}
+
+@media only screen and (max-width: $media-size-ipad) {
+    .box-dot-list {
+        height: 50%;
+    }
+
+    .bag-selecter {
+        height: 50%;
+    }
+
+    .select-card-active {
+        margin: 2% 0 2% 5% !important;
+        max-height: 35% !important;
+    }
+
+    #paralax-number div h1 {
+        font-size: 40px !important;
+    }
+
+    #paralax-number div h2 {
+        font-size: 72px;
+    }
+
+    .paralax-text-0 {
+        text-shadow: $paralax-number-border-ipad 0px 0px #a7c36f,
+            $paralax-number-border-ipad-negative $paralax-number-border-ipad 0px #a7c36f,
+            $paralax-number-border-ipad $paralax-number-border-ipad-negative 0px #a7c36f,
+            $paralax-number-border-ipad $paralax-number-border-ipad 0px #a7c36f,
+            $paralax-number-border-ipad-negative $paralax-number-border-ipad-negative 0px #a7c36f,
+            $paralax-number-border-ipad-negative 0px 0px #a7c36f,
+            0px $paralax-number-border-ipad-negative 0px #a7c36f,
+            0px $paralax-number-border-ipad 0px #a7c36f;
+    }
+
+    /* #86E3CE #D0E6A5 #FFDD94 */
+    .paralax-text-1 {
+        text-shadow: $paralax-number-border-ipad 0px 0px #63c8b1,
+            $paralax-number-border-ipad-negative $paralax-number-border-ipad 0px #63c8b1,
+            $paralax-number-border-ipad $paralax-number-border-ipad-negative 0px #63c8b1,
+            $paralax-number-border-ipad $paralax-number-border-ipad 0px #63c8b1,
+            $paralax-number-border-ipad-negative $paralax-number-border-ipad-negative 0px #63c8b1,
+            $paralax-number-border-ipad-negative 0px 0px #63c8b1,
+            0px $paralax-number-border-ipad-negative 0px #63c8b1,
+            0px $paralax-number-border-ipad 0px #63c8b1;
+    }
+
+    .paralax-text-2 {
+        text-shadow: $paralax-number-border-ipad 0px 0px #f0c977,
+            $paralax-number-border-ipad-negative $paralax-number-border-ipad 0px #f0c977,
+            $paralax-number-border-ipad $paralax-number-border-ipad-negative 0px #f0c977,
+            $paralax-number-border-ipad $paralax-number-border-ipad 0px #f0c977,
+            $paralax-number-border-ipad-negative $paralax-number-border-ipad-negative 0px #f0c977,
+            $paralax-number-border-ipad-negative 0px 0px #f0c977,
+            0px $paralax-number-border-ipad-negative 0px #f0c977,
+            0px $paralax-number-border-ipad 0px #f0c977;
+    }
+
+    #title-section h1 {
+        font-size: 40px;
+        white-space: nowrap;
+    }
+}
+
+@media only screen and (max-width: $media-size-mobile) {
+    .bag-selecter {
+        padding-top: 20% !important;
+    }
+
+    .select-card-active {
+        margin: 2% 0 2% 2% !important;
+    }
+
+    .center-center-content {
+        font-size: 16px !important;
+    }
+
+    #paralax-number div h1 {
+        font-size: 24px !important;
+    }
+
+    #paralax-number div h2 {
+        font-size: 32px;
+    }
+
+    .sanook-hl {
+        font-size: 48px !important;
+    }
+
+    .sanook-hl::after {
+        content: '"\a' !important;
+        white-space: pre;
+    }
+
+    .paralax-text-0 {
+        text-shadow: $paralax-number-border-mobile 0px 0px #a7c36f,
+            $paralax-number-border-mobile-negative $paralax-number-border-mobile 0px #a7c36f,
+            $paralax-number-border-mobile $paralax-number-border-mobile-negative 0px #a7c36f,
+            $paralax-number-border-mobile $paralax-number-border-mobile 0px #a7c36f,
+            $paralax-number-border-mobile-negative $paralax-number-border-mobile-negative 0px #a7c36f,
+            $paralax-number-border-mobile-negative 0px 0px #a7c36f,
+            0px $paralax-number-border-mobile-negative 0px #a7c36f,
+            0px $paralax-number-border-mobile 0px #a7c36f;
+    }
+
+    /* #86E3CE #D0E6A5 #FFDD94 */
+    .paralax-text-1 {
+        text-shadow: $paralax-number-border-mobile 0px 0px #63c8b1,
+            $paralax-number-border-mobile-negative $paralax-number-border-mobile 0px #63c8b1,
+            $paralax-number-border-mobile $paralax-number-border-mobile-negative 0px #63c8b1,
+            $paralax-number-border-mobile $paralax-number-border-mobile 0px #63c8b1,
+            $paralax-number-border-mobile-negative $paralax-number-border-mobile-negative 0px #63c8b1,
+            $paralax-number-border-mobile-negative 0px 0px #63c8b1,
+            0px $paralax-number-border-mobile-negative 0px #63c8b1,
+            0px $paralax-number-border-mobile 0px #63c8b1;
+    }
+
+    .paralax-text-2 {
+        text-shadow: $paralax-number-border-mobile 0px 0px #f0c977,
+            $paralax-number-border-mobile-negative $paralax-number-border-mobile 0px #f0c977,
+            $paralax-number-border-mobile $paralax-number-border-mobile-negative 0px #f0c977,
+            $paralax-number-border-mobile $paralax-number-border-mobile 0px #f0c977,
+            $paralax-number-border-mobile-negative $paralax-number-border-mobile-negative 0px #f0c977,
+            $paralax-number-border-mobile-negative 0px 0px #f0c977,
+            0px $paralax-number-border-mobile-negative 0px #f0c977,
+            0px $paralax-number-border-mobile 0px #f0c977;
+    }
+
+    #title-section h1 {
+        font-size: 32px;
+        white-space: nowrap;
+    }
 }
 
 .box-dot-list-img {
@@ -692,6 +940,7 @@ export default {
     /* background-color: #a7c36f; */
     scroll-snap-align: start;
 }
+
 /* #e6ffb8 */
 /* b3d868 */
 /* ffad84 */
@@ -738,8 +987,7 @@ export default {
 .select-card {
     display: flex;
     column-gap: 10%;
-    
-    
+
     position: relative;
     overflow: hidden;
     transition: width 1s, height 1s, margin 1s, border-radius 1s;
@@ -830,8 +1078,8 @@ export default {
     /* padding: auto; 
     background-image: url(require('@/assets/about_bag_bg.jpg')); */
     background-image: url('https://www.sanookkit.com/assets/269de4a8ef662462864e0a2907cf2535');
-    background-size: 100% 100%;
 }
+
 .center-center-content {
     position: relative;
     top: 50%;
@@ -851,7 +1099,6 @@ export default {
     background-color: rgb(32, 74, 74);
     scroll-snap-align: start;
     background-image: url('../assets/cloud_bg.png');
-    background-size: 100% 100%;
 }
 
 #section-3 {
@@ -898,7 +1145,6 @@ export default {
     width: 100%;
     background-image: url('../assets/learning_bg.png');
     background-color: wheat;
-    background-size: 100% auto;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -912,14 +1158,12 @@ export default {
     height: 100vh;
     width: 100%;
     background-image: url('../assets/cloundBngWText.png');
-    background-size: 100% 100%;
 }
 
 #title-section h1 {
     position: absolute;
     filter: drop-shadow(0 0 0.25rem rgba(255, 99, 99, 0.29));
     transform: translate(-50%, -50%);
-    font-size: 64px !important;
     top: 50%;
     left: 50%;
 }
@@ -998,11 +1242,16 @@ export default {
     top: 50%;
     width: 100%;
     transform: translate(0, -50%);
+    margin: 0;
 }
 
 .sanook-hl {
     font-size: 72px;
     color: #FA897B;
+}
+
+#paralax-number div h1 {
+    font-size: 54px;
 }
 
 .sanook-hl::before {
@@ -1016,52 +1265,25 @@ export default {
 }
 
 .paralax-text-0 {
-    font-size: 124px;
     /* -webkit-text-stroke-width: 5px;
     -webkit-text-stroke-color: rgb(255, 255, 255); */
     color: #D0E6A5;
     /* filter: drop-shadow(0 0 0.75rem rgba(0,0,0,0.29)); */
-    text-shadow: 5px 0px 0px #a7c36f,
-        -5px 5px 0px #a7c36f,
-        5px -5px 0px #a7c36f,
-        5px 5px 0px #a7c36f,
-        -5px -5px 0px #a7c36f,
-        -5px 0px 0px #a7c36f,
-        0px -5px 0px #a7c36f,
-        0px 5px 0px #a7c36f;
 }
 
 /* #86E3CE #D0E6A5 #FFDD94 */
 .paralax-text-1 {
-    font-size: 124px;
     /* -webkit-text-stroke-width: 5px;
     -webkit-text-stroke-color: rgb(255, 255, 255); */
     color: #86E3CE;
     /* filter: drop-shadow(0 0 0.75rem rgba(0,0,0,0.29)); */
-    text-shadow: 5px 0px 0px #63c8b1,
-        -5px 5px 0px #63c8b1,
-        5px -5px 0px #63c8b1,
-        5px 5px 0px #63c8b1,
-        -5px -5px 0px #63c8b1,
-        -5px 0px 0px #63c8b1,
-        0px -5px 0px #63c8b1,
-        0px 5px 0px #63c8b1;
 }
 
 .paralax-text-2 {
-    font-size: 124px;
     /* -webkit-text-stroke-width: 5px;
     -webkit-text-stroke-color: rgb(255, 255, 255); */
     color: #FFDD94;
     /* filter: drop-shadow(0 0 0.75rem rgba(0,0,0,0.29)); */
-    text-shadow: 5px 0px 0px #f0c977,
-        -5px 5px 0px #f0c977,
-        5px -5px 0px #f0c977,
-        5px 5px 0px #f0c977,
-        -5px -5px 0px #f0c977,
-        -5px 0px 0px #f0c977,
-        0px -5px 0px #f0c977,
-        0px 5px 0px #f0c977;
 }
 
 .center-item {
@@ -1107,5 +1329,51 @@ export default {
 
 .right-bag-detail {
     background-color: aquamarine;
+}
+
+// responsive
+@media screen and (orientation: portrait) {
+
+    /* แนวตั้ง */
+    /* Portrait styles */
+    #title-section {
+        background-size: auto 100%;
+    }
+
+    .background-repeat {
+        background-size: auto 100%;
+        background-position: center;
+    }
+
+    #section-2 {
+        background-size: auto 100%;
+        background-position: center;
+    }
+
+    #about-bag-with-bg {
+        background-size: auto 100%;
+        background-position: center;
+    }
+}
+
+@media screen and (orientation: landscape) {
+
+    /* แนวนอน */
+    /* Landscape styles */
+    #title-section {
+        background-size: 100% 100%;
+    }
+
+    .background-repeat {
+        background-size: 100% 100%;
+    }
+
+    #section-2 {
+        background-size: 100% 100%;
+    }
+
+    #about-bag-with-bg {
+        background-size: 100% 100%;
+    }
 }
 </style>

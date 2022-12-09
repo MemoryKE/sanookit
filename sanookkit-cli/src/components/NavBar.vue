@@ -84,6 +84,11 @@ export default {
                     link: '/manage-admin',
                     isActive: false
                 },
+                {
+                    title: 'จัดการรูปภาพ',
+                    link: '/manage-cli-asset',
+                    isActive: false
+                }
             ],
             appTitle: 'Awesome App',
             sidebar: false,
@@ -101,7 +106,8 @@ export default {
                 case '/dashboard': 
                 case '/manage-student': 
                 case '/manage-learning-resource': 
-                case'/manage-admin':
+                case '/manage-admin':
+                case '/manage-cli-asset':
                     this.type = 'dashboard'
                     console.log(this.type)
                     break;

@@ -1,6 +1,57 @@
 <template>
 <div id="manage-student-view">
-    <v-card class="main-search-table">
+    <v-card class="mx-auto" tile>
+        <!-- <v-card-title>Tutorials</v-card-title> -->
+        <v-card-title class="search-bar">
+            <div class="search-bar-title">
+                <v-text-field v-for="(search, index) of searchs" :key="index" v-model="search.search" append-icon="mdi-magnify" :label="search.title" single-line hide-details></v-text-field>
+
+            </div>
+        </v-card-title>
+        <v-card-actions>
+            <v-list-item class="grow">
+
+                <v-row class="mr-1" justify="end">
+                    <v-menu top :offset-y="true">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn class="mx-2" rounded color="success" v-bind="attrs" v-on="on">
+                                <v-icon>
+                                    mdi-plus
+                                </v-icon>
+                                เพิ่มแหล่งเรียนรู้
+                            </v-btn>
+                        </template>
+
+                        <v-list>
+                            <v-list-item @click="addResourceBtnHandle(index)" v-for="(item, index) in dropdown_add_item" :key="index">
+                                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+                </v-row>
+            </v-list-item>
+        </v-card-actions>
+
+        <v-data-table :headers="headers" :items="filteredItems" :sortable="false">
+            <template v-slot:item.edit_btn="{ item }">
+                <v-btn disabled text @click="onClickEditHandle(item)">
+                    <v-icon>
+                        mdi-pencil
+                    </v-icon>
+                </v-btn>
+            </template>
+            <template v-slot:item.remove_btn="{ item }">
+                <v-btn text small rounded color="error" @click="removeResourceHandle(item._id)">
+                            <v-icon>
+                                mdi-delete
+                            </v-icon>
+                            <!-- ลบนักเรียน -->
+                        </v-btn>
+            </template>
+        </v-data-table>
+
+    </v-card>
+    <v-card class="main-search-table" v-if="false">
         <v-card-title class="search-bar">
             <div class="search-bar-title">
                 <v-text-field v-for="(search, index) of searchs" :key="index" v-model="search.search" append-icon="mdi-magnify" :label="search.title" single-line hide-details></v-text-field>
@@ -58,7 +109,23 @@
             </template>
         </v-simple-table>
     </v-card>
-    <v-dialog v-model="dialog[0].isOpen" persistent max-width="1000px">
+    <v-dialog v-model="deleteDialog" width="500">
+                    <v-card>
+                        <v-card-title>
+                            ยืนยันการลบแหล่งเรียนรู้
+                        </v-card-title>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="error" text @click="deleteDialog = false">
+                                ยกเลิก
+                            </v-btn>
+                            <v-btn color="error" small rounded @click="deleteLearningResource(removeId)">
+                                ยืนยัน
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+    <v-dialog v-model="dialog[0].isOpen" v-if="dialog[0].isOpen" persistent max-width="1000px">
         <v-card>
             <v-card-title class="bg-title">
                 <span class="text-h5">ข้อมูลนักเรียน</span>
@@ -83,7 +150,7 @@
                         </v-row>
                     </v-container>
                 </v-form>
-                <small>*indicates required field</small>
+                <!-- <small>*indicates required field</small> -->
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -96,7 +163,7 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
-    <v-dialog v-model="dialog[1].isOpen" persistent max-width="1000px">
+    <v-dialog v-model="dialog[1].isOpen" v-if="dialog[1].isOpen" persistent max-width="1000px">
         <v-card>
             <v-card-title class="bg-title">
                 <span class="text-h5">ข้อมูลนักเรียน</span>
@@ -105,14 +172,17 @@
                 <v-form ref="mediaForm" class="mx-2" lazy-validation>
                     <v-container>
                         <v-row>
-                            <v-col cols="12" sm="10" md="10">
+                            <v-col cols="12" sm="8" md="8">
                                 <v-text-field label="หัวข้อความรู้" hint="This field uses counter prop" :rules="[rules.required]" v-model="addMediaForm.title" />
                             </v-col>
                             <v-col cols="12" sm="2">
                                 <v-select :items="grade_list" item-text="text" item-value="value" label="ระดับชั้น" ref="grade" :rules="[rules.required]" v-model="addMediaForm.grade" />
                             </v-col>
+                            <v-col cols="12" sm="2">
+                                <v-select :items="media_type_list" item-text="text" item-value="value" label="ประเภทสื่อ" ref="mediaType" :rules="[rules.required]" v-model="addMediaForm.media_type" />
+                            </v-col>
                             <v-col cols="12" sm="6" md="6">
-                                <v-file-input :rules="[rules.required]" accept="image/png, image/jpeg, image/bmp" placeholder="Pick an avatar" label="หน้าปกคู่มือสนุกคิด" v-model="addMediaForm.img_file" />
+                                <v-file-input :rules="[rules.required]" accept="image/png, image/jpeg, image/bmp" placeholder="Pick an avatar" label="รูปประกอบสื่อสนุกคิด" v-model="addMediaForm.img_file" />
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
                                 <v-textarea label="คำอธิบาาย" hint="This field uses counter prop" :rules="[rules.required]" v-model="addMediaForm.description" />
@@ -147,13 +217,13 @@
                                 <v-select :items="grade_list" item-text="text" item-value="value" label="ระดับชั้น" ref="grade" :rules="[rules.required]" v-model="activity.grade" />
                             </v-col> -->
                             <v-col cols="12" sm="6" md="6">
-                                <v-file-input  accept="image/png, image/jpeg, image/bmp" placeholder="Pick an avatar" label="หน้าปกคู่มือสนุกคิด" v-model="activity.qr_file" />
+                                <v-file-input accept="image/png, image/jpeg, image/bmp" placeholder="Pick an avatar" label="คิวอาร์โค้ด" v-model="activity.qr_file" />
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
-                                <v-file-input  multiple accept="image/png, image/jpeg, image/bmp" placeholder="Pick an avatar" label="หน้าปกคู่มือสนุกคิด" v-model="activity.img_files" />
+                                <v-file-input multiple accept="image/png, image/jpeg, image/bmp" placeholder="Pick an avatar" label="รูปตัวอย่างกิจกรรม" v-model="activity.img_files" />
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
-                                <v-textarea label="คำอธิบาาย" hint="This field uses counter prop" :rules="[rules.required]" v-model="activity.description" />
+                                <v-textarea label="คำอธิบาายกิจกรรม" hint="This field uses counter prop" :rules="[rules.required]" v-model="activity.description" />
                             </v-col>
                             <!-- <v-col cols="12" sm="6" md="6">
                                 <v-file-input :rules="[rules.required]" accept=".pdf" placeholder="Pick an avatar" label="คู่มือสนุกคิด" v-model="activity.pdf_file" />
@@ -171,7 +241,7 @@
                         </v-row>
                     </v-container>
                 </v-form>
-                <small>*indicates required field</small>
+                <!-- <small>*indicates required field</small> -->
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -184,7 +254,7 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
-    <v-dialog v-model="dialog[2].isOpen" persistent max-width="1000px">
+    <v-dialog v-model="dialog[2].isOpen" v-if="dialog[2].isOpen" persistent max-width="1000px">
         <v-card>
             <v-card-title class="bg-title">
                 <span class="text-h5">ข้อมูลนักเรียน</span>
@@ -200,24 +270,27 @@
                                 <v-select :items="grade_list" item-text="text" item-value="value" label="ระดับชั้น" ref="grade" :rules="[rules.required]" v-model="addAnotherResourceForm.grade" />
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
-                                <v-file-input :rules="[rules.required]" accept="image/png, image/jpeg, image/bmp" placeholder="Pick an avatar" label="หน้าปกคู่มือสนุกคิด" v-model="addAnotherResourceForm.img_file" />
+                                <v-file-input :rules="[rules.required]" accept="image/png, image/jpeg, image/bmp" placeholder="Pick an avatar" label="คิวอาร์โค้ด" v-model="addAnotherResourceForm.img_file" />
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
-                                <v-text-field label="แหล่งอ้างอิง" hint="This field uses counter prop" :rules="[rules.required]" v-model="addAnotherResourceForm.refer_link" />
+                                <v-text-field label="แหล่งอ้างอิง (url)" hint="This field uses counter prop" :rules="[rules.required]" v-model="addAnotherResourceForm.refer_link" />
                             </v-col>
                         </v-row>
                     </v-container>
                 </v-form>
-                <small>*indicates required field</small>
+                <!-- <small>*indicates required field</small> -->
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="dialog[2].isOpen = false">
                     ยกเลิก
                 </v-btn>
-                <v-btn color="blue darken-1" text @click="dialog[2].type == 'addNew' ? addNewAnotherResource() : editAnotherResource()">
+                <v-btn color="darken-1" text @click="addNewAnotherResource()">
                     บันทึก
                 </v-btn>
+                <!-- <v-btn color="darken-1" text @click="dialog[2].type == 'addNew' ? addNewAnotherResource() : editAnotherResource()">
+                    บันทึก
+                </v-btn> -->
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -233,6 +306,8 @@ export default {
     name: 'ManageLearningResourceView',
     data() {
         return {
+            removeId: null,
+            deleteDialog: false,
             trueDialog: true,
             rules: {
                 required: value => !!value || 'Required.',
@@ -288,27 +363,39 @@ export default {
             ],
             headers: [{
                     text: 'ระดับชั้น',
-                    align: 'start',
-                    sortable: true,
-                    key: 'grade',
+                    value: 'grade',
                 },
                 {
                     text: 'หัวข้อความรู้',
-                    key: 'title'
+                    value: 'title'
                 },
                 {
                     text: 'หมวดหมู่แหล่งเรียนรู้',
-                    key: 'learning_type'
+                    value: 'learning_type'
                 },
                 {
-                    text: '',
-                    key: 'edit_btn'
+                    text: 'ดู/แก้ไขข้อมูล',
+                    value: 'edit_btn'
                 },
                 {
-                    text: '',
-                    key: 'remove_btn'
+                    text: 'ลบแหล่งเรียนรู้',
+                    value: 'remove_btn'
                 },
 
+            ],
+            media_type_list: [
+                {
+                    text: "สื่อเพื่อพัฒนาด้านสติปัญญา",
+                    value: "สื่อเพื่อพัฒนาด้านสติปัญญา"
+                },
+                {
+                    text: "สื่อเพื่อพัฒนาทักษะชีวิต",
+                    value: "สื่อเพื่อพัฒนาทักษะชีวิต"
+                },
+                {
+                    text: "สื่อเพื่อพัฒนาด้านร่างกาย",
+                    value: "สื่อเพื่อพัฒนาด้านร่างกาย"
+                }
             ],
             grade_list: [{
                     text: "ป.1",
@@ -356,6 +443,7 @@ export default {
                 description: '',
                 teacher_des: '',
                 parent_des: '',
+                media_type: '',
                 activities: [{
                     title: '',
                     qr_file: null,
@@ -372,12 +460,15 @@ export default {
     mounted() {
         this.requestData()
         this.setupData()
-        
 
         // this.getPostalList()
         // this.getSubdistrictList()
     },
     methods: {
+        removeResourceHandle(id) {
+            this.removeId = id
+            this.deleteDialog = true
+        },
         addNewManual() {
             // const blobImg = new Blob()
             // blobImg.
@@ -459,7 +550,7 @@ export default {
             }]
             var img_file_list = [this.addMediaForm.img_file]
             this.addMediaForm.activities.forEach((activity, index) => {
-                if(typeof activity.qr_file != 'undefined' && activity.qr_file !=  null) {
+                if (typeof activity.qr_file != 'undefined' && activity.qr_file != null) {
                     image_name_list.push({
                         type: 'activity',
                         index: index,
@@ -467,7 +558,7 @@ export default {
                     })
                     img_file_list.push(activity.qr_file)
                 }
-                if(typeof activity.img_files != 'undefined' && activity.img_files !=  null) {
+                if (typeof activity.img_files != 'undefined' && activity.img_files != null) {
                     activity.img_files.forEach((img) => {
                         image_name_list.push({
                             type: 'activity',
@@ -481,14 +572,12 @@ export default {
             return [image_name_list, img_file_list]
         },
         addNewActivityHandle() {
-            this.addMediaForm.activities.push(
-                {
-                    title: '',
-                    qr_file: null,
-                    img_files: null,
-                    description: ''
-                }
-            )
+            this.addMediaForm.activities.push({
+                title: '',
+                qr_file: null,
+                img_files: null,
+                description: ''
+            })
         },
         removeActivityHandle(activity_index) {
             this.addMediaForm.activities.splice(activity_index, 1)
@@ -497,6 +586,7 @@ export default {
             if (!this.$refs.anotherResourceForm.validate()) {
                 return
             }
+            // var anotherResourceData = new FormData()
             const anotherResourceData = {
                 title: this.addAnotherResourceForm.title,
                 grade: this.addAnotherResourceForm.grade,
@@ -509,16 +599,28 @@ export default {
                 learning_type: 'another',
                 img_files: [this.addAnotherResourceForm.img_file]
             }
+            // anotherResourceData.append('title', this.addAnotherResourceForm.title)
+            // anotherResourceData.append('grade', this.addAnotherResourceForm.grade)
+            // anotherResourceData.append('refer_link', this.addAnotherResourceForm.refer_link)
+            // anotherResourceData.append('image_name_list', [{
+            //         type: 'normal',
+            //         image_name: this.addAnotherResourceForm.img_file.name,
+            //         field: 'img_name'
+            //     }])
+            // anotherResourceData.append('learning_type', 'another')
+            // anotherResourceData.append('img_files', [this.addAnotherResourceForm.img_file])
+
             this.$store.dispatch("addLearningResourceImageList", anotherResourceData).then((_) => {
                 const res = this.learning_resource
+                console.log(res?.ss)
+                if (res.grade == undefined) { return }
                 this.$store.dispatch("addLearningResourceList", res).then((_) => {
                     this.dialog[2].isOpen = false
                     this.requestData()
                 })
             })
         },
-        setupData() {
-        },
+        setupData() {},
         onClickEditBtnHandle(item) {
             const target_dialog = this.dropdown_add_item.map(e => e.value).indexOf(item.learning_type);
             this.dialog[target_dialog].isOpen = true
@@ -539,7 +641,7 @@ export default {
             // this.addMediaForm 
         },
         editAnotherResource() {
-            
+
         },
         onClickEditHandle(item) {
             this.add_form_field = item
@@ -549,8 +651,9 @@ export default {
             this.$store.dispatch("deleteLearningResource", target_id).then((_) => {
                 const data = this.learning_resource
                 this.$store.dispatch("deleteLearningResourceImage", data).then((_) => {
-                this.requestData()
-            })
+                    this.requestData()
+                    this.deleteDialog = false
+                })
             })
         },
         deleteStudent(target_id) {
@@ -596,6 +699,9 @@ export default {
 </script>
 
 <style lang="scss">
+noscript {
+    display: none
+}
 #manage-student-view {
     width: 100vw;
     min-height: 90vh;

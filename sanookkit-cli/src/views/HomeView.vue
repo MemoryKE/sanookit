@@ -1,6 +1,9 @@
 <template>
 <div class="home-container">
-    <div id="info-section"></div>
+    <div id="info-section">
+        <img id="logo-info-section" src="../assets/home_logo_info_section.png" ></img>
+        <img id="title-info-section" src="../assets/home_title_info_section.png" ></img>
+    </div>
     <div id="number-section">
         <h1>เราแจกไปแล้วกว่า</h1>
         <b-row id="paralax-number">
@@ -12,12 +15,13 @@
     </div>
     <div id="activity-section">
         <v-carousel class="p-10" cycle hide-delimiter-background show-arrows-on-hover height="700px">
-            <v-carousel-item :src="require('../assets/IMG_3178.jpg')">
+            <v-carousel-item v-for="(item, index) of activities_item" :key="index" :src="`${imgBaseURL}${item.name}`" />
+            <!-- <v-carousel-item :src="require('../assets/IMG_3178.jpg')">
             </v-carousel-item>
             <v-carousel-item :src="require('../assets/IMG_3179.jpg')">
             </v-carousel-item>
             <v-carousel-item :src="require('../assets/IMG_3180.jpg')">
-            </v-carousel-item>
+            </v-carousel-item> -->
         </v-carousel>
     </div>
     <div id="news-section">
@@ -75,11 +79,14 @@ import {
     ACTIVITY_IMAGE_LIST,
     NEWS_LIST
 } from '../datas/homeData.json'
+import axios from 'axios';
 
 export default {
     name: 'Home',
     data() {
         return {
+            activities_item: [],
+            imgBaseURL: "https://www.sanookkit.com/assets/",
             amountDeal: [],
             isOnScreen: false,
             activityList: [],
@@ -93,6 +100,7 @@ export default {
     mounted() {
         this.setupData()
         this.requestData()
+        this.getCliImg()
     },
     created() {
         window.addEventListener('scroll', this.eventScrollHandler);
@@ -101,6 +109,12 @@ export default {
         window.removeEventListener('scroll', this.eventScrollHandler);
     },
     methods: {
+        getCliImg() {
+            axios.get('https://sanookkit-server.vercel.app/cliImgAsset').then((res) => {
+                console.log(res)
+                this.activities_item = res.data
+            })
+        },
         setupData() {
             // this.amountDeal = AMOUNT_DEAL
             this.newsList = NEWS_LIST
@@ -186,10 +200,53 @@ export default {
 
 #info-section {
     height: 100vh;
-    background-image: url('@/assets/home_page_bg.jpg');
-    background-size: 100% 100%;
+    background-image: url('@/assets/home_bg_info_section.png');
+    /* background-size: 100% 100%; */
     background-position: center;
     margin-bottom: 10vh;
+    display: flex;
+   justify-content: center;
+   flex-direction: column;
+   align-items: center;
+   flex-wrap: wrap;
+   row-gap: 5%;
+}
+
+
+@media screen and (orientation: portrait) {
+
+/* แนวตั้ง */
+/* Portrait styles */
+#info-section {
+    background-size: auto 100%;
+}
+#logo-info-section {
+    width: 90%;
+    height: auto;
+    /* background-color: #86E3CE; */
+}
+#title-info-section {
+    width: 80%;
+    height: auto;
+}
+}
+
+@media screen and (orientation: landscape) {
+
+/* แนวนอน */
+/* Landscape styles */
+#info-section {
+    background-size: 100% 100%;
+}
+#logo-info-section {
+    width: auto;
+    height: 50%;
+    /* background-color: #86E3CE; */
+}
+#title-info-section {
+    width: auto;
+    height: 20%;
+}
 }
 
 #number-section h1 {

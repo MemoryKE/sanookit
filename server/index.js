@@ -42,12 +42,13 @@ const corsOptions = {
     origin: 'http://localhost:8080',
     credentials: true,
 };
+// origin: 'http://localhost:8080',
 
 app.use(express.json())
 app.use(cors(corsOptions));
 app.use('/assets', express.static('./assets'));
 
-const mongoAtlasUri = "mongodb+srv://dbAdmin:admin1234@sanookit.g5spwuu.mongodb.net/sanookkit?retryWrites=true&w=majority";
+const mongoAtlasUri = 'mongodb+srv://dbAdmin:admin1234@sanookit.g5spwuu.mongodb.net/sanookkit?retryWrites=true&w=majority';
 
 // Connect to the MongoDB cluster
 mongoose.connect(mongoAtlasUri, {
@@ -271,3 +272,9 @@ const decrypt = (src) => {
 app.listen(port, () => {
     console.log(`Start server at port ${port}.`)
 })
+
+// app.use((req, res, next) => {
+    // console.log("A new request received at " + Date.now());
+    //res.send("Hello World!");
+    // next();  
+//  });

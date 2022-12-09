@@ -16,5 +16,8 @@ export const mutations = {
     },
     loadingFullPageMutation(state, payload) {
         state.loadingFullPage = payload
+    },
+    cliImgAssetInfoMutation(state, payload) {
+        state.cliImgAssetInfo = payload
     }
 }

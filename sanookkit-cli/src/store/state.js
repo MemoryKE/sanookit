@@ -4,5 +4,6 @@ export const state = {
     learningResource: {},
     userList: [],
     signin: [],
-    loadingFullPage: false
+    loadingFullPage: false,
+    cliImgAssetInfo: []
 }
